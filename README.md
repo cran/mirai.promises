@@ -43,16 +43,16 @@ a ‘shiny’ app.
 This app takes c. 2s to start compared to the 8s it would otherwise take
 if the ‘long-running’ computations were not running on parallel workers.
 
-The option ‘mirai.promises’ may be set at any time to customise the
-frequency with which to poll for promise resolution (defaults to 0.1s).
+`polling()` may be used to customise the frequency with which to poll
+for promise resolution (defaults to every 100 ms).
 
 ``` r
-options(mirai.promises = 0.05)
-
 library(shiny)
 library(promises)
 library(mirai)
 library(mirai.promises)
+
+polling(freq = 50L)
 
 # set 4 persistent workers
 daemons(n = 4L)
