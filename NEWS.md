@@ -1,3 +1,8 @@
+# mirai.promises 0.3.1
+
+* Documents that importing `polling()` in a package allows access to the S3 methods.
+* Depends on `mirai` and `promises` so no longer necessary to attach all 3 packages.
+
 # mirai.promises 0.3.0
 
 * Implements `polling()` as a more efficient mechanism for setting the polling time for promise resolution, retiring the option 'mirai.promises'.

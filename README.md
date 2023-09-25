@@ -43,14 +43,17 @@ a ‘shiny’ app.
 This app takes c. 2s to start compared to the 8s it would otherwise take
 if the ‘long-running’ computations were not running on parallel workers.
 
-`polling()` may be used to customise the frequency with which to poll
-for promise resolution (defaults to every 100 ms).
+The auxiliary function `polling()` may be used to customise the
+frequency with which to poll for promise resolution (defaults to every
+100 ms).
+
+Package authors wishing to use the S3 methods contained within this
+package may simply import the `polling()` function to make them
+available.
 
 ``` r
-library(shiny)
-library(promises)
-library(mirai)
 library(mirai.promises)
+library(shiny)
 
 polling(freq = 50L)
 

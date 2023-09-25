@@ -1,11 +1,17 @@
 library(mirai.promises)
-`%...>%` <- promises::`%...>%`
 nanotest <- function(x) invisible(x || stop("is not TRUE when expected to be TRUE"))
-nanotest(promises::is.promise(p1 <- promises::as.promise(mirai::mirai("completed"))))
-nanotest(promises::is.promise(p2 <- mirai::mirai("completed") %...>% identity()))
+nanotest(is.promise(p1 <- as.promise(mirai("completed"))))
+nanotest(is.promise(p2 <- mirai("completed") %...>% identity()))
 nanotest(mirai.promises:::..[["freq"]] == 0.1)
 nanotest(is.null(polling(freq = 1000)))
 nanotest(mirai.promises:::..[["freq"]] == 1L)
 nanotest(is.null(polling()))
 nanotest(mirai.promises:::..[["freq"]] == 0.1)
+if (requireNamespace("nanonext", quietly = TRUE)) {
+  s <- nanonext::socket()
+  r <- nanonext::recv_aio(s)
+  nanotest(is.promise(as.promise(r)))
+  nanonext::stop_aio(r)
+  close(s)
+}
 Sys.sleep(3L)

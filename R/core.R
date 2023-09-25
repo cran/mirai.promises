@@ -16,13 +16,49 @@
 
 # mirai.promises ---------------------------------------------------------------
 
+#' mirai.promises: Make 'Mirai' 'Promises'
+#'
+#' Allows 'mirai' objects encapsulating asynchronous computations, from the
+#'     \CRANpkg{mirai} package by Gao (2023), to be used interchangeably with
+#'     'promise' objects from the \CRANpkg{promises} package by Cheng (2021).
+#'     This facilitates their use with packages \CRANpkg{plumber} by Schloerke and Allen
+#'     (2022) and \CRANpkg{shiny} by Cheng, Allaire, Sievert, Schloerke, Xie,
+#'     Allen, McPherson, Dipert and Borges (2022).
+#'
+#' @section Notes:
+#'
+#'     This package provides the methods \code{\link{as.promise.mirai}} and
+#'     \code{\link{as.promise.recvAio}} for the S3 generic \code{\link{as.promise}}
+#'     exported by the 'promises' package.
+#'
+#'     An auxiliary function \code{\link{polling}} provides the additional
+#'     option to tune the frequency at which 'mirai' are checked for resolution.
+#'
+#'     Package authors wishing to use the S3 methods may simply import the
+#'     function \code{\link{polling}} to make them available.
+#'
+#' @section Links:
+#'
+#'     \CRANpkg{mirai} website: \url{https://shikokuchuo.net/mirai/}
+#'
+#'     \CRANpkg{nanonext} website: \url{https://shikokuchuo.net/nanonext/}
+#'
+#'     NNG website: \url{https://nng.nanomsg.org/}
+#'
+#' @encoding UTF-8
+#' @author Charlie Gao \email{charlie.gao@@shikokuchuo.net}
+#'     (\href{https://orcid.org/0000-0002-0750-061X}{ORCID})
+#'
 #' @importFrom mirai is_error_value unresolved
 #' @importFrom later later
 #' @importFrom promises as.promise promise
 #'
-.. <- NULL
+#' @docType package
+#' @name mirai.promises-package
+#'
+NULL
 
-.onLoad <- function(libname, pkgname) .. <<- `[[<-`(new.env(hash = FALSE), "freq", 0.1)
+.. <- `[[<-`(new.env(), "freq", 0.1)
 
 #' Make 'Mirai' 'Promise'
 #'
@@ -51,21 +87,18 @@
 #' @method as.promise mirai
 #' @export
 #'
-as.promise.mirai <- function(x) {
-
+as.promise.mirai <- function(x)
   promise(
     function(resolve, reject) {
       query <- function()
         if (unresolved(x))
           later(query, delay = ..[["freq"]]) else
-            if (is_error_value(value <- parent.env(x)[["result"]]))
+            if (is_error_value(value <- .subset2(x, "data")))
               reject(value) else
                 resolve(value)
       query()
     }
   )
-
-}
 
 #' @rdname as.promise.mirai
 #' @method as.promise recvAio
@@ -83,13 +116,17 @@ as.promise.recvAio <- as.promise.mirai
 #' @return Invisible NULL.
 #'
 #' @examples
+#' # set polling frequency to 1s
 #' polling(freq = 1000L)
+#'
+#' # reset polling frequency to default 100 ms
 #' polling()
 #'
 #' @export
 #'
 polling <- function(freq = 100L) {
 
+  is.numeric(freq) || stop("'freq' must be a numeric value")
   `[[<-`(.., "freq", freq / 1000L)
   invisible()
 
