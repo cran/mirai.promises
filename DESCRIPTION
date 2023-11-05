@@ -1,7 +1,7 @@
 Package: mirai.promises
 Type: Package
 Title: Make 'Mirai' 'Promises'
-Version: 0.3.1
+Version: 0.4.0
 Description: Allows 'mirai' objects encapsulating asynchronous computations,
     from the 'mirai' package by Gao (2023) <doi:10.5281/zenodo.7912722>, to be
     used interchangeably with 'promise' objects from the 'promises' package by
@@ -23,14 +23,14 @@ BugReports: https://github.com/shikokuchuo/mirai.promises/issues
 URL: https://shikokuchuo.net/mirai.promises/,
         https://github.com/shikokuchuo/mirai.promises/
 Encoding: UTF-8
-Depends: R (>= 3.5), mirai (>= 0.2.0), promises (>= 1.1.0)
-Imports: later (>= 1.0.0)
-Suggests: nanonext (>= 0.3.0)
+Depends: R (>= 3.5)
+Imports: later (>= 1.0.0), nanonext (>= 0.10.1), promises (>= 1.1.0)
+Suggests: mirai (>= 0.10.0)
 RoxygenNote: 7.2.3
 NeedsCompilation: no
-Packaged: 2023-09-25 10:54:50 UTC; cg334
+Packaged: 2023-11-05 10:55:35 UTC; cg334
 Author: Charlie Gao [aut, cre] (<https://orcid.org/0000-0002-0750-061X>),
   Hibiki AI Limited [cph]
 Maintainer: Charlie Gao <charlie.gao@shikokuchuo.net>
 Repository: CRAN
-Date/Publication: 2023-09-25 12:30:02 UTC
+Date/Publication: 2023-11-05 12:00:02 UTC
