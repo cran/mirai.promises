@@ -1,10 +1,10 @@
-d066c5b6f8afd19917ca6c1782e672ef *DESCRIPTION
-7bc75ab728c3df5b5db55eee0cc65f90 *NAMESPACE
-ad53ee7b192afec78c4b7af5b7d3b86e *NEWS.md
-34a2b817c0030b26cb0c586738286d57 *R/core.R
+961bc3fc62f4a38fd592ffd9cfeff194 *DESCRIPTION
+965820721914fc07c7e03a6400eaca86 *NAMESPACE
+2712451b61ca6106633d033c468cb5f6 *NEWS.md
+3ddf533b8d55529a2d6425e563055a09 *R/core.R
 e3076ad193e271ee46d5700f3083abfa *README.md
 6656f3332b160e8b60f01068455e3fe8 *inst/CITATION
-a92085b00c4a0239f3d1c8431195a3db *man/as.promise.mirai.Rd
-0014a51ec1cdba5aeda36c86225f4b40 *man/mirai.promises-package.Rd
+18c712633d0373f283f19a5c708a97e6 *man/as.promise.mirai.Rd
+3cb529d429972bd14a2d46ea3b0ead90 *man/mirai.promises-package.Rd
 9850b4d51e72c534d7660051620c6af4 *man/polling.Rd
-2ed6470161da3c7ff16392d281d46cd1 *tests/tests.R
+a5950d6d7e16cd78fbe464ee9d26f863 *tests/tests.R

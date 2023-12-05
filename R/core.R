@@ -21,15 +21,15 @@
 #' Allows 'mirai' objects encapsulating asynchronous computations, from the
 #'     \CRANpkg{mirai} package by Gao (2023), to be used interchangeably with
 #'     'promise' objects from the \CRANpkg{promises} package by Cheng (2021).
-#'     This facilitates their use with packages \CRANpkg{plumber} by Schloerke and Allen
-#'     (2022) and \CRANpkg{shiny} by Cheng, Allaire, Sievert, Schloerke, Xie,
-#'     Allen, McPherson, Dipert and Borges (2022).
+#'     This facilitates their use with packages \CRANpkg{plumber} by Schloerke
+#'     and Allen (2022) and \CRANpkg{shiny} by Cheng, Allaire, Sievert,
+#'     Schloerke, Xie, Allen, McPherson, Dipert and Borges (2022).
 #'
 #' @section Notes:
 #'
 #'     This package provides the methods \code{\link{as.promise.mirai}} and
-#'     \code{\link{as.promise.recvAio}} for the S3 generic \code{\link{as.promise}}
-#'     exported by the 'promises' package.
+#'     \code{\link{as.promise.recvAio}} for the S3 generic
+#'     \code{\link{as.promise}} exported by the 'promises' package.
 #'
 #'     An auxiliary function \code{\link{polling}} provides the additional
 #'     option to tune the frequency at which 'mirai' are checked for resolution.
@@ -50,7 +50,6 @@
 #'     (\href{https://orcid.org/0000-0002-0750-061X}{ORCID})
 #'
 #' @importFrom nanonext is_error_value unresolved
-#' @importFrom later later
 #' @importFrom promises as.promise promise
 #'
 #' @docType package
@@ -58,7 +57,16 @@
 #'
 NULL
 
-. <- `[[<-`(new.env(hash = FALSE), "freq", 0.1)
+# nocov start
+# tested implicitly
+
+.onLoad <- function(libname, pkgname) {
+
+  as.promise.recvAio <<- as.promise.mirai <<- as.promise.mirai()
+
+}
+
+# nocov end
 
 #' Make 'Mirai' 'Promise'
 #'
@@ -68,8 +76,8 @@ NULL
 #'
 #' @return A 'promise' object.
 #'
-#' @details This function is an S3 method for the generic \code{\link{as.promise}}
-#'     for class 'mirai' or 'recvAio'.
+#' @details This function is an S3 method for the generic
+#'     \code{\link{as.promise}} for class 'mirai' or 'recvAio'.
 #'
 #'     \code{\link{polling}} may be used to customise the frequency with which
 #'     to poll for promise resolution (defaults to every 100 milliseconds).
@@ -87,18 +95,22 @@ NULL
 #' @method as.promise mirai
 #' @export
 #'
-as.promise.mirai <- function(x)
-  promise(
-    function(resolve, reject) {
-      query <- function()
-        if (unresolved(x))
-          later(query, delay = .[["freq"]]) else
-            if (is_error_value(value <- .subset2(x, "value")))
-              reject(value) else
-                resolve(value)
-      query()
-    }
-  )
+as.promise.mirai <- function(x) {
+  later <- .getNamespace("later")[["later"]]
+  pollfreq <- 0.1
+  function(x)
+    promise(
+      function(resolve, reject) {
+        query <- function()
+          if (unresolved(x))
+            later(query, delay = pollfreq) else
+              if (is_error_value(value <- .subset2(x, "value")))
+                reject(value) else
+                  resolve(value)
+        query()
+      }
+    )
+}
 
 #' @rdname as.promise.mirai
 #' @method as.promise recvAio
@@ -127,7 +139,7 @@ as.promise.recvAio <- as.promise.mirai
 polling <- function(freq = 100L) {
 
   is.numeric(freq) || stop("'freq' must be a numeric value")
-  `[[<-`(., "freq", freq / 1000L)
+  `[[<-`(environment(as.promise.mirai), "pollfreq", freq / 1000L)
   invisible()
 
 }
